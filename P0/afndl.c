@@ -23,8 +23,7 @@
 //  Nª ESTADOS A LOS QUE SE LLEGA
 //  LISTA DE ESTADOS
 
-int cierre_lambda(int* estados, int* trans_letra, int* trans_lambda, int*** transitions, int** transitions_l, int letra);
-int cierre_lambda_sinletra(int* estados, int* trans_lambda, int** transitions_l);
+int cierre_lambda(int* estados, int* trans_letra, int* trans_lambda, int*** transitions, int** transitions_l, int letra, int consum);
 
 int main(int argc, char *argv[]){
   FILE* fp = NULL;
@@ -127,9 +126,7 @@ int main(int argc, char *argv[]){
     letra = (int)argv[2][i]-ASCIITOINDEX;
     for(j=0;j<n;j++){
       if(estados_ant[j]){
-        if(transitions[j][letra] != NULL){
-          cierre_lambda(estados_post, transitions[j][letra], transitions_l[j], transitions, transitions_l, letra);
-        }
+        cierre_lambda(estados_post, transitions[j][letra], transitions_l[j], transitions, transitions_l, letra, 0);
       }
     }
     aux = estados_ant;
@@ -162,29 +159,18 @@ int main(int argc, char *argv[]){
   return 0;
 }
 
-int cierre_lambda(int* estados, int* trans_letra, int* trans_lambda, int*** transitions, int** transitions_l, int letra){
+int cierre_lambda(int* estados, int* trans_letra, int* trans_lambda, int*** transitions, int** transitions_l, int letra, int consum){
   int i = 0;
-  if(trans_letra != NULL){
+  if(trans_letra != NULL && consum == 0){
     for(i=1 ;i<trans_letra[0]+1; i++){
       estados[trans_letra[i]] = 1;
-      cierre_lambda_sinletra(estados, transitions_l[trans_letra[i]], transitions_l);
+      cierre_lambda(estados, transitions[trans_lambda[i]][letra], transitions_l[trans_lambda[i]], transitions, transitions_l, letra, 1);
     }
   }
   if(trans_lambda != NULL){
     for(i=1 ;i<trans_lambda[0]+1; i++){
       estados[trans_lambda[i]] = 1;
-      cierre_lambda(estados, transitions[trans_lambda[i]][letra], transitions_l[trans_lambda[i]], transitions, transitions_l, letra);
-    }
-  }
-  return 0;
-}
-
-int cierre_lambda_sinletra(int* estados, int* trans_lambda, int** transitions_l){
-  int i = 0;
-  if(trans_lambda != NULL){
-    for(i=1 ;i<trans_lambda[0]+1; i++){
-      estados[trans_lambda[i]] = 1;
-      cierre_lambda_sinletra(estados, transitions_l[trans_lambda[i]], transitions_l);
+      cierre_lambda(estados, transitions[trans_lambda[i]][letra], transitions_l[trans_lambda[i]], transitions, transitions_l, letra, consum);
     }
   }
   return 0;
