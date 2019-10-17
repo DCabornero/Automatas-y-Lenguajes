@@ -164,7 +164,7 @@ int cierre_lambda(int* estados, int* trans_letra, int* trans_lambda, int*** tran
   if(trans_letra != NULL && consum == 0){
     for(i=1 ;i<trans_letra[0]+1; i++){
       estados[trans_letra[i]] = 1;
-      cierre_lambda(estados, transitions[trans_lambda[i]][letra], transitions_l[trans_lambda[i]], transitions, transitions_l, letra, 1);
+      cierre_lambda(estados, transitions[trans_letra[i]][letra], transitions_l[trans_letra[i]], transitions, transitions_l, letra, 1);
     }
   }
   if(trans_lambda != NULL){
