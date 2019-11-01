@@ -6,7 +6,7 @@
 #include <string.h>
 #include "afnd.h"
 
-typedef struct _LISTAESTADOS ListaEstados;
+typedef struct _ListaEstados ListaEstados;
 
 /*
 Input: afnd -> autómata del que queremos obtener la tabla

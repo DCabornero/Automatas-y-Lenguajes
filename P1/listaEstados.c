@@ -8,21 +8,22 @@ int _ListaEstadosEstadoIgual(int** tablaProvisional, int* tablaBin, int lenProv,
 //////////////////////////////////////////////////////////////////////////////////
 
 
-struct ListaEstados{
+struct _ListaEstados{
   int numEstados;
   int lenAFND;
   int** tabla;
   AFND* afnd;
 };
 
+
 ListaEstados* ListaEstadosNuevo(AFND* afnd){
-  struct ListaEstados* listaEstados = NULL;
+  ListaEstados* listaEstados = NULL;
   int i = 0;
   int numEstados = 0, lenAFND = 0;
   int* tablaBin = NULL;
   int** tablaProvisional = NULL;
 
-  listaEstados = (struct ListaEstados *)malloc(sizeof(struct ListaEstados));
+  listaEstados = (ListaEstados *) malloc(sizeof(ListaEstados));
   lenAFND = AFNDNumEstados(afnd);
   listaEstados->lenAFND = lenAFND;
   listaEstados->afnd = afnd;
@@ -74,7 +75,7 @@ int ListaEstadosRelacionado(ListaEstados* lista, int estadoD, int estadoND){
 
 char* ListaEstadosNombreEstado(ListaEstados* lista, int estado){
   int i = 0;
-  char nombreEstado[STRLEN] = "";
+  char *nombreEstado, cadena[STRLEN] = "";
   int* tablaBin = NULL;
 
   if(lista == NULL){
@@ -91,11 +92,15 @@ char* ListaEstadosNombreEstado(ListaEstados* lista, int estado){
 
   for(i=0;i<lista->lenAFND;i++){
     if(tablaBin[i]){
-      strcat(nombreEstado, AFNDNombreEstadoEn(lista->afnd, i));
-      strcat(nombreEstado, ",");
+      strcat(cadena, AFNDNombreEstadoEn(lista->afnd, i));
+      strcat(cadena, ",");
     }
   }
-  nombreEstado[strlen(nombreEstado)-1] = 0;
+  cadena[strlen(cadena)-1] = 0;
+
+  nombreEstado = (char*)malloc(strlen(cadena)*sizeof(char));
+  strcpy(nombreEstado, cadena);
+
   return nombreEstado;
 }
 
