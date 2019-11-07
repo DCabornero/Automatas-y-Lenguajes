@@ -7,39 +7,45 @@
 #include "afnd.h"
 
 typedef struct _ListaEstados ListaEstados;
+typedef struct _Estado Estado;
 
 /*
-Input: afnd -> autómata del que queremos obtener la tabla
-Output: lista de listas, donde el primer acceso es relativo a cada nuevo estado
-        del AFD y el segundo es una tabla binaria que muestra qué estados estamos
-        uniendo mediante transiciones lambda
+Input: afnd -> autómata del que queremos obtener la lista de estados
+Output: instancia vacía de una lista de estados del AFD
 */
-ListaEstados* ListaEstadosNuevo(AFND* afnd);
-
+ListaEstados* ListaEstadosInstancia(AFND* afnd);
 
 /*
-Input: lista -> lista de estados con la que se quiere trabajar
-       estadoD -> número del estado del autómata determinista
-       estadoND -> número del estado del autómata no determinista
-Output: True si el estado del autómata determinista incluye al estado del autómata
-        no determinista
-        False en caso contrario
+Input: list -> Lista de Estados descubiertos
+       estado -> Estado a insertar en la lista
+Output: Devuelve la lista, NULL en caso de que haya algún error
+CUIDADO: NO COMPRUEBA QUE EL ESTADO ESTÉ DUPLICADO,
+ESO LO HACE ListaEstadosExisteEstado
 */
-int ListaEstadosRelacionado(ListaEstados* lista, int estadoD, int estadoND);
-
+ListaEstados* ListaEstadosInsertarEstado(ListaEstados* list, int* estado);
 
 /*
-Input: lista -> lista de estados con la que se quiere trabajar
-       estado -> estado del que se quiere obtener el nombre asociado
-Output: Devuelve un nombre único asociado al estado del AFD
+Input: list -> Lista de Estados descubiertos
+       numEstado -> elemento n-ésimo de la lista de estados que se quiere
+Output: Estado número numEstado
 */
-char* ListaEstadosNombreEstado(ListaEstados* lista, int estado);
-
+int* ListaEstadosNumEstado(ListaEstados* list, int numEstado);
 
 /*
-Input: lista -> lista de estados con la que se quiere trabajar
-Output: Devuelve el número de estados del AFD
+Input: list -> Lista de Estados descubiertos
+       listaBin-> Estado que se quiere comprobar si está
+Output: Si está, devuelve su lugar. -1 en caso contrario
 */
-int ListaEstadosNumEstados(ListaEstados* lista);
+int ListaEstadosExisteEstado(ListaEstados* list, int* listaBin);
 
+/*
+Input: list -> Lista de Estados descubiertos
+Output: Número de estados descubiertos
+*/
+int ListaEstadosNumEstados(ListaEstados* list);
+
+/*
+Input: list -> Lista de Estados descubiertos
+*/
+void BorrarEstado(ListaEstados* list);
 #endif
