@@ -84,7 +84,7 @@ int* ListaEstadosNumEstado(ListaEstados* list, int numEstado){
 
 int ListaEstadosExisteEstado(ListaEstados* list, int* listaBin){
   Estado* estadoActual;
-  int i;
+  int i, contador = 0;
 
   estadoActual = list->primerEstado;
 
@@ -92,10 +92,13 @@ int ListaEstadosExisteEstado(ListaEstados* list, int* listaBin){
     for(i=0;i<list->lenAFND;i++){
       if(estadoActual->listaBin[i] != listaBin[i]){
         estadoActual = estadoActual->next;
+        contador++;
         break;
       }
     }
-    return i;
+    if(i == list->lenAFND){
+      return contador;
+    }
   }
 
   return -1;

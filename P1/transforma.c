@@ -32,9 +32,11 @@ int* AFNDEstadosDestino(AFND* afnd, int* estado, int simbolo, int numEstados){
 
   destino = (int*) calloc(numEstados,sizeof(int));
   for(i=0;i<numEstados;i++){
-    for(j=0;j<numEstados;j++){
-      if(AFNDTransicionIndicesEstadoiSimboloEstadof(afnd, estado[i], simbolo, estado[j])){
-        destino[j] = 1;
+    if(estado[i] == 1) {
+      for(j=0;j<numEstados;j++){
+        if(AFNDTransicionIndicesEstadoiSimboloEstadof(afnd, i, simbolo, j)){
+          destino[j]=1;
+        }
       }
     }
   }
@@ -74,7 +76,7 @@ AFND* AFNDGenerarAFD(AFND* afnd, Transiciones* trans, ListaEstados* listaE){
   //Insertamos las transiciones
   for(i=0;i<numEstados;i++){
     transicionActual = TransicionesNesima(trans, i);
-    for(j=0;i<numSimbolos;j++){
+    for(j=0;j<numSimbolos;j++){
         AFNDInsertaTransicion(afd, tablaNames[i], tablaSimbolos[j], tablaNames[transicionActual[j]]);
     }
   }
@@ -181,6 +183,10 @@ char* _AFNDBinAString(AFND* afnd, int* tablaBin, int numEstados){
 
   nombre = (char*)malloc(strlen(aux));
   strcpy(nombre,aux);
+
+  if(strlen(nombre) == 0){
+    strcpy(nombre,"Sumidero");
+  }
 
   return nombre;
 }
