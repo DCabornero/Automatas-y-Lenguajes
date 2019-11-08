@@ -9,7 +9,7 @@ int main(int argc, char ** argv)
 {
 
 	AFND * p_afnd;
-	//AFND * afd;
+	AFND * afd;
 
 	p_afnd= AFNDNuevo("af11", 6, 3);
 
@@ -36,14 +36,11 @@ int main(int argc, char ** argv)
 	AFNDInsertaLTransicion(p_afnd, "q3", "q5");
 	AFNDCierraLTransicion(p_afnd);
 
-	/*afd  = AFNDTransforma(p_afnd);
+	afd = AFNDTransforma(p_afnd);
 	AFNDImprime(stdout,afd);
 	AFNDADot(afd);
 
-	AFNDElimina(afd);*/
-  AFNDImprime(stdout, p_afnd);
-  AFNDADot(p_afnd);
-	AFNDElimina(p_afnd);
+	AFNDElimina(afd);
 
 	return 0;
 }

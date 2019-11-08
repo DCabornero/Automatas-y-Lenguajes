@@ -41,6 +41,12 @@ int TransicionesNumEstados(Transiciones* list);
 
 /*
 Input: list -> Lista de transiciones
+Output: Número de simbolos de autómata
+*/
+int TransicionesNumSimbolos(Transiciones* list);
+
+/*
+Input: list -> Lista de transiciones
 */
 void BorrarTransiciones(Transiciones* list);
 #endif

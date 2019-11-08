@@ -97,6 +97,10 @@ int TransicionesNumEstados(Transiciones* list){
   return list->numEstados;
 }
 
+int TransicionesNumSimbolos(Transiciones* list){
+  return list->numSimbolos;
+}
+
 void BorrarTransiciones(Transiciones* list){
   Transicion *anterior, *actual;
 
