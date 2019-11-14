@@ -50,7 +50,7 @@ ListaEstados* ListaEstadosInstancia(AFND* afnd){
 ListaEstados* ListaEstadosInsertarEstado(ListaEstados* list, int* estado){
   Estado* nuevo = NULL;
 
-  nuevo = (Estado*) malloc(sizeof(Estado*));
+  nuevo = (Estado*) malloc(sizeof(Estado));
   if(!nuevo){
     printf("No se ha podido crear el nuevo estado\n");
     return NULL;

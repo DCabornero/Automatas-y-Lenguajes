@@ -21,8 +21,10 @@ int* AFNDClausuraLambda(AFND* afnd, int* estado){
     if(estado[i] == 1){
       tablaBinAux = _AFNDClausuraBin(afnd, i, numEstados);
       tablaBin = _AFNDMergeEstados(tablaBin, tablaBinAux, numEstados);
+      free(tablaBinAux);
     }
   }
+  free(estado);
   return tablaBin;
 }
 
@@ -81,6 +83,11 @@ AFND* AFNDGenerarAFD(AFND* afnd, Transiciones* trans, ListaEstados* listaE){
     }
   }
 
+  for(i=0; i<numEstados; i++){
+    free(tablaNames[i]);
+  }
+  free(tablaSimbolos);
+  free(tablaNames);
   return afd;
 }
 
@@ -120,6 +127,7 @@ AFND* AFNDTransforma(AFND* afnd){
       index = ListaEstadosExisteEstado(listaEstados, estadoSiguiente);
       if(index >= 0){
         transicionActual[j] = index;
+        free(estadoSiguiente);
       }
       //En caso contrario, hay que añadir una nueva entrada a la lista de estados
       //y a la de transiciones
@@ -136,7 +144,7 @@ AFND* AFNDTransforma(AFND* afnd){
 
   //Hemos conseguido nuestras tablas de estados y transiciones, queda generar el AFD
   afd = AFNDGenerarAFD(afnd, transiciones, listaEstados);
-
+  free(transicionActual);
   BorrarEstado(listaEstados);
   BorrarTransiciones(transiciones);
   return afd;
@@ -181,11 +189,13 @@ char* _AFNDBinAString(AFND* afnd, int* tablaBin, int numEstados){
     }
   }
 
-  nombre = (char*)malloc(strlen(aux));
-  strcpy(nombre,aux);
-
-  if(strlen(nombre) == 0){
+  if(strlen(aux) == 0){
+    nombre = (char*)malloc(strlen("Sumidero")+1);
     strcpy(nombre,"Sumidero");
+  }
+  else{
+    nombre = (char*)malloc(strlen(aux)+1);
+    strcpy(nombre,aux);
   }
 
   return nombre;
@@ -204,8 +214,8 @@ int _AFNDTipoEstado(AFND* afnd, ListaEstados* listaE, int numEstado){
   if(numEstado == 0){
     tipo = INICIAL;
   }
-
-  for(i=0;i<ListaEstadosNumEstados(listaE);i++){
+  //WARNING A SABER QUE HACE ESE -1
+  for(i=0;i<ListaEstadosNumEstados(listaE)-1;i++){
     //Analizamos el estado del AFND si es que importa
     if(estado[i] == 1){
       tipoAFND = AFNDTipoEstadoEn(afnd, i);
@@ -220,7 +230,6 @@ int _AFNDTipoEstado(AFND* afnd, ListaEstados* listaE, int numEstado){
       }
     }
   }
-
   return tipo;
 }
 

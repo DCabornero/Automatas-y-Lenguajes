@@ -41,6 +41,7 @@ int main(int argc, char ** argv)
 	AFNDADot(afd);
 
 	AFNDElimina(afd);
+	AFNDElimina(p_afnd);
 
 	return 0;
 }
