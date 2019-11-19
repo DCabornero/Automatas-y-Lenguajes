@@ -2,12 +2,12 @@
 
 #define STRLEN 256
 
-///////////////////////////////////////////////////////////////////////////////
+/*///////////////////////////////////////////////////////////////////////////*/
 int* _AFNDClausuraBin(AFND* afnd, int estado, int numEstados);
 char* _AFNDBinAString(AFND* afnd, int* tablaBin, int numEstados);
 int _AFNDTipoEstado(AFND* afnd, ListaEstados* listaE, int numEstado);
 int* _AFNDMergeEstados(int* tablaBin, int* tablaBinAux, int tam);
-///////////////////////////////////////////////////////////////////////////////
+/*///////////////////////////////////////////////////////////////////////////*/
 
 int* AFNDClausuraLambda(AFND* afnd, int* estado){
   int numEstados, i;
@@ -16,7 +16,7 @@ int* AFNDClausuraLambda(AFND* afnd, int* estado){
   numEstados = AFNDNumEstados(afnd);
   tablaBin = (int*) calloc(numEstados,sizeof(int));
 
-  //Junta las clausuras de cada estado del AFND al que pertenece este estado
+  /*Junta las clausuras de cada estado del AFND al que pertenece este estado*/
   for(i=0;i<numEstados;i++){
     if(estado[i] == 1){
       tablaBinAux = _AFNDClausuraBin(afnd, i, numEstados);
@@ -57,16 +57,16 @@ AFND* AFNDGenerarAFD(AFND* afnd, Transiciones* trans, ListaEstados* listaE){
   numSimbolos = TransicionesNumSimbolos(trans);
   tablaSimbolos = (char**)malloc(numSimbolos*sizeof(char*));
   tablaNames = (char**)malloc(numEstados*sizeof(char*));
-  //Creamos el AFD
+  /*Creamos el AFD*/
   afd = AFNDNuevo("afd", numEstados, numSimbolos);
 
-  //Insertamos sus símbolos
+  /*Insertamos sus símbolos*/
   for(i=0;i<numSimbolos;i++){
     tablaSimbolos[i] = AFNDSimboloEn(afnd, i);
     AFNDInsertaSimbolo(afd,tablaSimbolos[i]);
   }
 
-  //Insertamos sus estados
+  /*Insertamos sus estados*/
   for(i=0;i<numEstados;i++){
     estadoActual = ListaEstadosNumEstado(listaE, i);
     nameEstado = _AFNDBinAString(afnd, estadoActual, AFNDNumEstados(afnd));
@@ -75,7 +75,7 @@ AFND* AFNDGenerarAFD(AFND* afnd, Transiciones* trans, ListaEstados* listaE){
     AFNDInsertaEstado(afd, nameEstado, tipoEstado);
   }
 
-  //Insertamos las transiciones
+  /*Insertamos las transiciones*/
   for(i=0;i<numEstados;i++){
     transicionActual = TransicionesNesima(trans, i);
     for(j=0;j<numSimbolos;j++){
@@ -98,39 +98,39 @@ AFND* AFNDTransforma(AFND* afnd){
   int i,j;
   int numSimbolos;
   int index;
-  int* estadoActual; //Estado que se está explorando
-  int* estadoSiguiente; //Estado destino del estado actual para el simbolo actual
-  int* transicionActual;  //Tabla de transiciones para un cierto estado
+  int* estadoActual; /*Estado que se está explorando*/
+  int* estadoSiguiente; /*Estado destino del estado actual para el simbolo actual*/
+  int* transicionActual;  /*Tabla de transiciones para un cierto estado*/
 
   listaEstados = ListaEstadosInstancia(afnd);
   transiciones = TransicionesInstancia(afnd);
   numSimbolos = AFNDNumSimbolos(afnd);
 
-  //Estado inicial
+  /*Estado inicial*/
   estadoActual = (int*) calloc(AFNDNumEstados(afnd), sizeof(int));
   estadoActual[AFNDIndiceEstadoInicial(afnd)] = 1;
   estadoActual = AFNDClausuraLambda(afnd, estadoActual);
   listaEstados = ListaEstadosInsertarEstado(listaEstados, estadoActual);
   transiciones = TransicionesNuevaTransicion(transiciones);
 
-  //Iteramos por estados hasta que los agotemos
+  /*Iteramos por estados hasta que los agotemos*/
   for(i=0;i<ListaEstadosNumEstados(listaEstados);i++){
     estadoActual = ListaEstadosNumEstado(listaEstados, i);
     transicionActual = (int*) calloc(numSimbolos,sizeof(int));
 
-    //Iteramos para conseguir cada estado destino del símbolo para nuestro estado
+    /*Iteramos para conseguir cada estado destino del símbolo para nuestro estado*/
     for(j=0;j<numSimbolos;j++){
       estadoSiguiente = AFNDClausuraLambda(afnd, AFNDEstadosDestino(afnd, estadoActual, j, AFNDNumEstados(afnd)));
 
-      //Si el estado siguiente se encuentra en nuestra lista de estados, podemos
-      //modificar ya la tabla de transiciones
+      /*Si el estado siguiente se encuentra en nuestra lista de estados, podemos
+      modificar ya la tabla de transiciones*/
       index = ListaEstadosExisteEstado(listaEstados, estadoSiguiente);
       if(index >= 0){
         transicionActual[j] = index;
         free(estadoSiguiente);
       }
-      //En caso contrario, hay que añadir una nueva entrada a la lista de estados
-      //y a la de transiciones
+      /*En caso contrario, hay que añadir una nueva entrada a la lista de estados
+      y a la de transiciones*/
       else{
         listaEstados = ListaEstadosInsertarEstado(listaEstados, estadoSiguiente);
         transiciones = TransicionesNuevaTransicion(transiciones);
@@ -138,11 +138,11 @@ AFND* AFNDTransforma(AFND* afnd){
       }
     }
 
-    //Insertamos las transiciones de este estado en la tabla de transiciones
+    /*Insertamos las transiciones de este estado en la tabla de transiciones*/
     transiciones = TransicionesInsertarTransicion(transiciones, transicionActual, i);
   }
 
-  //Hemos conseguido nuestras tablas de estados y transiciones, queda generar el AFD
+  /*Hemos conseguido nuestras tablas de estados y transiciones, queda generar el AFD*/
   afd = AFNDGenerarAFD(afnd, transiciones, listaEstados);
   free(transicionActual);
   BorrarEstado(listaEstados);
@@ -150,7 +150,7 @@ AFND* AFNDTransforma(AFND* afnd){
   return afd;
 }
 
-//-------------------------FUNCIONES PRIVADAS--------------------------//
+/*-------------------------FUNCIONES PRIVADAS--------------------------*/
 /*
 Devuelve una tabla de longitud el número de estados llena de unos y ceros.
 En ella, se marcarán con unos los estados a los que se puede llegar por
@@ -214,9 +214,8 @@ int _AFNDTipoEstado(AFND* afnd, ListaEstados* listaE, int numEstado){
   if(numEstado == 0){
     tipo = INICIAL;
   }
-  //WARNING A SABER QUE HACE ESE -1
-  for(i=0;i<ListaEstadosNumEstados(listaE)-1;i++){
-    //Analizamos el estado del AFND si es que importa
+  for(i=0;i<AFNDNumEstados(afnd);i++){
+    /*Analizamos el estado del AFND si es que importa*/
     if(estado[i] == 1){
       tipoAFND = AFNDTipoEstadoEn(afnd, i);
       if(tipoAFND == FINAL || tipoAFND == INICIAL_Y_FINAL){
