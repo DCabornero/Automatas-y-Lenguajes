@@ -1,10 +1,32 @@
 Resumen estructuras utilizadas:
-(Ponerle también que hemos añadido el sumidero)
+-TAD transforma: TAD que se nos pide, con las principales funcionalidades que se
+nos requiere. La función más importante es la que utiliza el main de ejemplo,
+AFNDTransforma. El resto de funciones ayudan a este fin. Se han dejado las más
+importantes como públicas, especificadas en el .h.
+-TAD listaEstados: en resumidas cuentas es una lista enlazada que incluye todos
+los posibles estados del autómata (representado mediante un array binario que
+indica los estados del AFND que representa)
+-TAD transiciones: lista enlazada que incluye cada una de las transiciones,
+donde cada n-ésima transición está vinculada al estado n-ésimo. Esta transición
+es un array, donde el i-ésimo elemento del mismo indica el estado al que es
+llevado el estado n-ésimo mediante el símbolo i-ésimo.
+
+
+Detalles de implementación:
+Los estados son denotados de manera inequívoca mediante la concatenación de
+los estados del AFND que representa, en el riguroso orden en el que han sido
+escritos. El sumidero, por su parte, le correspondería la cadena vacía, que
+daba problemas a la hora de tratar con afnd.c. Por ello, se ha decidido llamarlo
+"sumidero".
+
+
 Ejemplos implementados:
 Hemos introducido 3 ejemplos en la entrega, el primero de ellos es el main que
 se nos proporcionaba en la práctica, y los otros dos son los ejemplos que
 aparecen en las transparencias en las que se explica el algoritmo de paso de
 AFND a AFD, y hemos comprobado que los tres dan el AFD correcto.
+
+
 Explicación del Makefile:
 Aunque al hacer make (o make all) se muestran toda la funcionalidad del Makefile,
 añadimos aquí una pequeña explicación.
