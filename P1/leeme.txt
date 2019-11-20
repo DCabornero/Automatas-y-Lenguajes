@@ -1,0 +1,18 @@
+Resumen estructuras utilizadas:
+(Ponerle también que hemos añadido el sumidero)
+Ejemplos implementados:
+Hemos introducido 3 ejemplos en la entrega, el primero de ellos es el main que
+se nos proporcionaba en la práctica, y los otros dos son los ejemplos que
+aparecen en las transparencias en las que se explica el algoritmo de paso de
+AFND a AFD, y hemos comprobado que los tres dan el AFD correcto.
+Explicación del Makefile:
+Aunque al hacer make (o make all) se muestran toda la funcionalidad del Makefile,
+añadimos aquí una pequeña explicación.
+Al hacer make (o make all) se generan todos los .o y los ejecutables
+correspondientes a los tres ejemplos.
+Para obtener el png del afd resultante de alguno de ellos basta con hacer
+make png y escribir ejemploN (siendo N el ejemplo que quiera ser ejecutado)
+en el prompt que saldrá tras lanzar make png.
+Ya que afnd.o es una librería proporcionada en la que no hemos modificado
+nada, ofrecemos dos opciones para make, clean y cleanall. Clean deja afnd.o,
+mientras que cleanall lo borra con el resto de los objetos y ejecutables.
