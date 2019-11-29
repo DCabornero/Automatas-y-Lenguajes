@@ -25,6 +25,15 @@ AFND* AFNDQuitarEstados(AFND* afnd, SetEstados* set);
 
 /*
 Input:
+  afnd -> afd con todos los estados alcanzables
+Output: Particion con conjuntos de estados, donde cada conjunto denota
+un estado distinguible
+*/
+Particion* NonDistinguishable(AFND* afnd);
+
+
+/*
+Input:
   afnd -> automata del que se quiere saber el destino de la transicion
   inicial -> índice del estado inicial de la transición
   simbolo -> índice del símbolo de la transición

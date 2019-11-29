@@ -44,7 +44,7 @@ Particion* ParticionInstancia(AFND* afnd){
   return particion;
 }
 
-Particion* ParticionInsertarSetEstados(Particion* list, int* setEstado){
+Particion* ParticionInsertarListaBin(Particion* list, int* setEstado){
   SetEstados* nuevo = NULL;
 
   nuevo = (SetEstados*) malloc(sizeof(SetEstados));
@@ -63,7 +63,7 @@ Particion* ParticionInsertarSetEstados(Particion* list, int* setEstado){
   return list;
 }
 
-int* ParticionNumSetEstados(Particion* list, int numSetEstados){
+int* ParticionNesimaListaBin(Particion* list, int numSetEstados){
   int i;
   SetEstados* setEstado;
 
@@ -79,7 +79,7 @@ int* ParticionNumSetEstados(Particion* list, int numSetEstados){
   return setEstado->listaBin;
 }
 
-int ParticionExisteSetEstados(Particion* list, int* listaBin){
+int ParticionExisteListaBin(Particion* list, int* listaBin){
   SetEstados* setEstadoActual;
   int i, contador = 0;
 
@@ -105,7 +105,56 @@ int ParticionNumSetEstados(Particion* list){
   return list->numSetEstados;
 }
 
-void BorrarSetEstados(Particion* list){
+SetEstados* ParticionPopSetEstados(Particion* list, int index){
+  SetEstados* set;
+  SetEstados* aux;
+  int i;
+
+  if(index >= list->numSetEstados){
+    return NULL;
+  }
+
+  aux = list->primerSetEstados;
+  for(i=0;i<index-1;i++){
+    aux = aux->next;
+  }
+
+  if(index == 0){
+    list->primerSetEstados = aux->next;
+    set = aux;
+  }
+  else{
+    set = aux->next;
+    aux->next = set->next;
+  }
+
+  list->numSetEstados--;
+  return set;
+}
+
+void ParticionInsertarSetEstados(Particion* list, SetEstados* set){
+  SetEstados* aux;
+
+  liberarSetEstados(list->ultimoSetEstados);
+  aux = list->primerSetEstados;
+
+  if(aux == NULL){
+    list->primerSetEstados = set;
+    return;
+  }
+
+  while(aux->next != NULL){
+    aux = aux->next;
+  }
+  aux->next = set;
+}
+
+int isInParticionSetEstados(Particion* list, SetEstados* set){
+  return ParticionExisteListaBin(list, set->listaBin);
+}
+
+
+void BorrarParticion(Particion* list){
   SetEstados *anterior, *actual;
 
   actual = list->primerSetEstados;
@@ -133,6 +182,18 @@ SetEstados* crearSetEstados(int lenAFD){
   return nuevo;
 }
 
+SetEstados* copiarSetEstados(SetEstados* set){
+  SetEstados* new;
+  int i;
+
+  new = crearSetEstados(set->lenAFD);
+  for(i=0;i<set->lenAFD;i++){
+    new->listaBin[i] = set->listaBin[i];
+  }
+
+  return new;
+}
+
 SetEstados* unionSetEstados(SetEstados* set1, SetEstados* set2){
   int* listaBin1;
   int* listaBin2;
@@ -149,7 +210,7 @@ SetEstados* unionSetEstados(SetEstados* set1, SetEstados* set2){
 
   result = (SetEstados*) malloc(sizeof(SetEstados));
   result->listaBin = (int*) malloc(sizeof(int)*set1->lenAFD);
-  result->lenAFD = setinterseccion1->lenAFD;
+  result->lenAFD = set1->lenAFD;
   result->next = NULL;
 
   for(i=0;i<result->lenAFD;i++){
@@ -186,7 +247,7 @@ SetEstados* interseccionSetEstados(SetEstados* set1, SetEstados* set2){
 SetEstados* complementarioSetEstados(SetEstados* set){
   int* listaBin;
   SetEstados* result;
-  int i = 0;aux
+  int i = 0;
 
   listaBin = set->listaBin;
 
@@ -235,7 +296,7 @@ int cardinalSetEstados(SetEstados* set){
   return card;
 }
 
-void vaciarSetEstados(SetEstados* set){
+void zerosSetEstados(SetEstados* set){
   int i = 0;
   for(i=0;i<set->lenAFD;i++){
     set->listaBin[i] = 0;
