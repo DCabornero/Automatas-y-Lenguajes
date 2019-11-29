@@ -55,9 +55,54 @@ SetEstados* Reachable(AFND* afnd){
 }
 
 
-AFND* AFNDQuitarEstados(AFND* afnd, SetEstados* set){
+AFND* AFNDQuitarEstados(AFND* afdinicial, SetEstados* set){
   AFND* afd;
+  int i, j;
+  int numSimbolos, numEstados;
+  int destino;
+  char** listaNombres;
+  char* simbolo;
+
+  numEstados = cardinalSetEstados(set);
+  numSimbolos = AFNDNumSimbolos(afdinicial);
+
+  listaNombres = (char**) malloc(numEstados*sizeof(char*));
+
+  afd = AFNDNuevo("afdreachable", numEstados, numSimbolos);
+
+  /* Insertamos los símbolos, idénticos al autómata inicial */
+  for(i=0;i<numSimbolos; i++){
+    AFNDInsertaSimbolo(afd, AFNDSimboloEn(afdinicial, i));
+  }
+
+  /* Insertamos los estados que necesitamos al afd y
+   obtenemos la lista de nombres de estados del afd (facilita cálculos)*/
+  for(i=0;i<AFNDNumEstados(afdinicial);i++){
+    if(isInSetEstados(set,i)){
+      listaNombres[j] = AFNDNombreEstadoEn(afdinicial,i);
+      AFNDInsertaEstado(afd, listaNombres[j], AFNDTipoEstadoEn(afdinicial, i));
+      j++;
+    }
+  }
+
+  /* Insertamos las transiciones correspondientes */
+  for(i=0;i<numEstados;i++){
+    for(j=0;j<numEstados;j++){
+      /* Obtenemos el destino de la transicion en el afd inicial*/
+      destino = AFNDTransicion(afdinicial, i, j);
+      if(destino == -1) continue;
+      /* Obtenemos (si existe) el destino de la transicion de nuestro afd*/
+      destino = AFNDIndiceDeEstado(afd, AFNDNombreEstadoEn(afdinicial,destino));
+      if(destino != -1){
+        AFNDInsertaTransicion(afd, listaNombres[i], AFNDSimboloEn(afd,j), listaNombres[destino]);
+      }
+    }
+  }
+
+  AFNDCierraLTransicion(afd);
+  free(listaNombres);
   
+  return afd;
 }
 
 
