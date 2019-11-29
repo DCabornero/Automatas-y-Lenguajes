@@ -10,12 +10,12 @@ typedef struct _Particion Particion;
 
 /*
 Input: afnd -> autómata del que queremos obtener la lista de estados
-Output: instancia vacía de una lista de estados del AFD
+Output: instancia vacía de una partición de estados del AFD
 */
 Particion* ParticionInstancia(AFND* afnd);
 
 /*
-Input: list -> Lista de Estados descubiertos
+Input: list -> Lista de Estados de la partición
        estado -> Estado a insertar en la lista
 Output: Devuelve la lista, NULL en caso de que haya algún error
 CUIDADO: NO COMPRUEBA QUE EL ESTADO ESTÉ DUPLICADO,

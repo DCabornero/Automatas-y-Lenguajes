@@ -119,7 +119,7 @@ void BorrarSetEstados(Particion* list){
   free(list);
 }
 
-SetEstados* crearSetEstados(int lenAFD, int* listaBin){
+SetEstados* crearSetEstados(int lenAFD){
   SetEstados* nuevo = NULL;
 
   nuevo = (SetEstados*) malloc(sizeof(SetEstados));
@@ -127,7 +127,7 @@ SetEstados* crearSetEstados(int lenAFD, int* listaBin){
     printf("No se ha podido crear el nuevo setEstado\n");
     return NULL;
   }
-  nuevo->listaBin = listaBin;
+  nuevo->listaBin = (int*) calloc(lenAFD, sizeof(int));
   nuevo->next = NULL;
   nuevo->lenAFD = lenAFD;
   return nuevo;
@@ -252,7 +252,7 @@ void insertSetEstados(SetEstados* set, int index){
   return;
 }
 
-int checkSetEstados(SetEstados* set, int index){
+int isInSetEstados(SetEstados* set, int index){
   return set->listaBin[index];
 }
 
