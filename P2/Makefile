@@ -1,8 +1,8 @@
 CC=gcc
 CFLAGS= -Wall -ansi -pedantic -g --debug
 CFLAGSAFND = -Wall -ansi -g --debug
-EJS = ejemplo1
-EJSO = ejemplo1.o
+EJS = ejemplo1 ejemplo2
+EJSO = ejemplo1.o ejemplo2.o
 TADSO = particion.o minimiza.o
 
 .PHONY: all #Genera los archivos de ejecución de los programas en C
@@ -26,6 +26,12 @@ ejemplo1: ejemplo1.o afnd.o $(TADSO)
 
 ejemplo1.o: ejemplo1.c afnd.h minimiza.h particion.h
 	$(CC) $(CFLAGS) -c ejemplo1.c
+
+ejemplo2: ejemplo2.o afnd.o $(TADSO)
+	$(CC) $(CFLAGS) -o ejemplo2 ejemplo2.o afnd.o $(TADSO)
+
+ejemplo2.o: ejemplo2.c afnd.h minimiza.h particion.h
+	$(CC) $(CFLAGS) -c ejemplo2.c
 
 .PHONY: clean #Elimina los ejecutables y los .o excepto afnd.o
 clean:
