@@ -135,18 +135,21 @@ SetEstados* ParticionPopSetEstados(Particion* list, int index){
 void ParticionInsertarSetEstados(Particion* list, SetEstados* set){
   SetEstados* aux;
 
-  liberarSetEstados(list->ultimoSetEstados);
+  set->next = list->ultimoSetEstados;
+
   aux = list->primerSetEstados;
 
-  if(aux == NULL){
+  if(aux->listaBin == NULL){
     list->primerSetEstados = set;
+    list->numSetEstados++;
     return;
   }
 
-  while(aux->next != NULL){
+  while(aux->next->listaBin != NULL){
     aux = aux->next;
   }
   aux->next = set;
+  list->numSetEstados++;
 }
 
 int isInParticionSetEstados(Particion* list, SetEstados* set){

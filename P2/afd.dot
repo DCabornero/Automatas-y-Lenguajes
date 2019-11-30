@@ -1,0 +1,16 @@
+digraph afd  { rankdir=LR;
+	_invisible [style="invis"];
+	q_0_4_8 [penwidth="2"];
+	q_3_7_11;
+	q_2_6_10;
+	q_1_5_9;
+	_invisible -> q_0_4_8 ;
+	q_0_4_8 -> q_1_5_9 [label="0"];
+	q_0_4_8 -> q_1_5_9 [label="1"];
+	q_3_7_11 -> q_0_4_8 [label="0"];
+	q_3_7_11 -> q_0_4_8 [label="1"];
+	q_2_6_10 -> q_3_7_11 [label="0"];
+	q_2_6_10 -> q_3_7_11 [label="1"];
+	q_1_5_9 -> q_2_6_10 [label="0"];
+	q_1_5_9 -> q_2_6_10 [label="1"];
+}

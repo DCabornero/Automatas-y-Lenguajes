@@ -31,7 +31,7 @@ un estado distinguible
 */
 Particion* NonDistinguishable(AFND* afnd);
 
-
+AFND* AFNDFabricaParticion(AFND* afnd, Particion* particion);
 /*
 Input:
   afnd -> automata del que se quiere saber el destino de la transicion

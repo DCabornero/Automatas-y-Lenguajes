@@ -1,11 +1,12 @@
 CC=gcc
 CFLAGS= -Wall -ansi -pedantic -g --debug
 CFLAGSAFND = -Wall -ansi -g --debug
-EJS = ejemplo1 ejemplo2 ejemplo3
-EJSO = particion.o minimiza.o
+EJS = ejemplo1
+EJSO = ejemplo1.o
+TADSO = particion.o minimiza.o
 
 .PHONY: all #Genera los archivos de ejecución de los programas en C
-all: $(EJSO)
+all: $(EJS)
 	@echo "Instrucciones del Makefile:"
 	@echo "	make clean: Para borrar todos los .o menos afnd.o"
 	@echo "	make cleanall: Para borrar todos los .o"
@@ -20,13 +21,19 @@ particion.o: particion.c particion.h
 afnd.o: afnd.c afnd.h
 	$(CC) $(CFLAGSAFND) -c afnd.c
 
+ejemplo1: ejemplo1.o afnd.o $(TADSO)
+	$(CC) $(CFLAGS) -o ejemplo1 ejemplo1.o afnd.o $(TADSO)
+
+ejemplo1.o: ejemplo1.c afnd.h minimiza.h particion.h
+	$(CC) $(CFLAGS) -c ejemplo1.c
+
 .PHONY: clean #Elimina los ejecutables y los .o excepto afnd.o
 clean:
-	rm -rf $(EJSO) $(EJS)
+	rm -rf $(TADSO) $(EJS) $(EJSO)
 
 .PHONY: cleanall #Elimina los ejecutables y los .o
 cleanall:
-	rm -rf afnd.o $(EJSO) $(EJS)
+	rm -rf afnd.o $(TADSO) $(EJS) $(EJSO)
 
 .PHONY: png
 png:
