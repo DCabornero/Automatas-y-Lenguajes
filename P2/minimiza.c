@@ -80,7 +80,7 @@ AFND* AFNDQuitarEstados(AFND* afdinicial, SetEstados* set){
   AFND* afd;
   int i, j = 0;
   int numSimbolos, numEstados;
-  int destino;
+  int origen, destino;
   char** listaNombres;
 
   numEstados = cardinalSetEstados(set);
@@ -108,8 +108,9 @@ AFND* AFNDQuitarEstados(AFND* afdinicial, SetEstados* set){
   /* Insertamos las transiciones correspondientes */
   for(i=0;i<numEstados;i++){
     for(j=0;j<numSimbolos;j++){
-      /* Obtenemos el destino de la transicion en el afd inicial*/
-      destino = AFNDTransicion(afdinicial, i, j);
+      /* Obtenemos el origen y el destino de la transicion en el afd inicial*/
+      origen = AFNDIndiceDeEstado(afdinicial, AFNDNombreEstadoEn(afd, i));
+      destino = AFNDTransicion(afdinicial, origen, j);
       if(destino == -1) continue;
       /* Obtenemos (si existe) el destino de la transicion de nuestro afd*/
       destino = AFNDIndiceDeEstado(afd, AFNDNombreEstadoEn(afdinicial,destino));
