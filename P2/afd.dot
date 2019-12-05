@@ -1,6 +1,6 @@
 digraph afd  { rankdir=LR;
 	_invisible [style="invis"];
-	q_2;
+	q_2 [penwidth="2"];
 	q_5;
 	q_1_7;
 	q_0_4;

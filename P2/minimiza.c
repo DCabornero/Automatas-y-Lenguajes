@@ -18,6 +18,8 @@ AFND* AFNDMinimiza(AFND* afnd){
   reachable = AFNDQuitarEstados(afnd, reach);
   particion = NonDistinguishable(reachable);
   final = AFNDFabricaParticion(reachable, particion);
+  BorrarParticion(particion);
+  liberarSetEstados(reach);
   AFNDElimina(reachable);
 
   return final;
@@ -25,6 +27,7 @@ AFND* AFNDMinimiza(AFND* afnd){
 
 SetEstados* Reachable(AFND* afnd){
   SetEstados* reach = NULL;
+  SetEstados* reachret = NULL;
   SetEstados* aux = NULL;
   SetEstados* descubiertos = NULL;
   int i, j;
@@ -65,10 +68,13 @@ SetEstados* Reachable(AFND* afnd){
     }
     /* Los estados descubiertos serán la lista obtenida menos los
     ya explorados */
+    liberarSetEstados(descubiertos);
     descubiertos = restaSetEstados(aux, reach);
     /* Damos por explorados todos los estados que pertenecían a la lista de
     descubiertos de esta iteración */
-    reach = unionSetEstados(reach, descubiertos);
+    reachret = unionSetEstados(reach, descubiertos);
+    liberarSetEstados(reach);
+    reach = reachret;
   }
   liberarSetEstados(aux);
   liberarSetEstados(descubiertos);
@@ -343,7 +349,7 @@ int _AFNDFabricaStatus(AFND* afnd, Particion* particion, int index){
   primera aparición.*/
   for(i=0;i<AFNDNumEstados(afnd);i++){
     if(listaBin[i] == 1){
-      return AFNDTipoEstadoEn(afnd, AFNDTipoEstadoEn(afnd, i));
+      return AFNDTipoEstadoEn(afnd, i);
     }
   }
   /* Aquí no se debería llegar, pero bueno, los warnings */
