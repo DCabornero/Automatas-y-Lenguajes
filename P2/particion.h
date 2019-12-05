@@ -5,9 +5,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include "afnd.h"
+#include "setEstados.h"
 
 typedef struct _Particion Particion;
-typedef struct _SetEstados SetEstados;
 
 /*
 Input: afnd -> autómata del que queremos obtener la lista de estados
@@ -68,28 +68,5 @@ int isInParticionSetEstados(Particion* list, SetEstados* set);
 Input: list -> Lista de Estados descubiertos
 */
 void BorrarParticion(Particion* list);
-
-
-SetEstados* crearSetEstados(int lenAFD);
-
-SetEstados* copiarSetEstados(SetEstados* set);
-
-SetEstados* unionSetEstados(SetEstados* set1, SetEstados* set2);
-
-SetEstados* interseccionSetEstados(SetEstados* set1, SetEstados* set2);
-
-SetEstados* complementarioSetEstados(SetEstados* set);
-
-SetEstados* restaSetEstados(SetEstados* set1, SetEstados* set2);
-
-int cardinalSetEstados(SetEstados* set);
-
-void zerosSetEstados(SetEstados* set);
-
-void insertSetEstados(SetEstados* set, int index);
-
-int isInSetEstados(SetEstados* set, int index);
-
-void liberarSetEstados(SetEstados* set);
 
 #endif
